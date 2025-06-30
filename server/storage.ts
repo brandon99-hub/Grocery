@@ -19,7 +19,7 @@ import {
   type InsertOrderItem,
 } from "@shared/schema";
 import { db } from "./db";
-import { eq, desc, and, ilike, sql } from "drizzle-orm";
+import { eq, desc, and, or, ilike, sql } from "drizzle-orm";
 
 // Interface for storage operations
 export interface IStorage {
@@ -38,6 +38,8 @@ export interface IStorage {
   createProduct(product: InsertProduct): Promise<Product>;
   updateProduct(id: number, product: Partial<InsertProduct>): Promise<Product | undefined>;
   deleteProduct(id: number): Promise<boolean>;
+  getBrands(): Promise<string[]>;
+  getDietaryTags(): Promise<string[]>;
 
   // Cart operations
   getCartItems(userId: string): Promise<(CartItem & { product: Product })[]>;
@@ -103,7 +105,10 @@ export class DatabaseStorage implements IStorage {
       conditions.push(eq(products.category, categoryId));
     }
     if (search) {
-      conditions.push(ilike(products.name, `%${search}%`));
+      conditions.push(or(
+        ilike(products.name, `%${search}%`),
+        ilike(products.description, `%${search}%`)
+      ));
     }
     
     if (conditions.length > 0) {
@@ -142,7 +147,17 @@ export class DatabaseStorage implements IStorage {
 
   async deleteProduct(id: number): Promise<boolean> {
     const result = await db.delete(products).where(eq(products.id, id));
-    return result.rowCount > 0;
+    return (result.rowCount || 0) > 0;
+  }
+
+  async getBrands(): Promise<string[]> {
+    // Return empty for now - will add when brand column exists
+    return [];
+  }
+
+  async getDietaryTags(): Promise<string[]> {
+    // Return empty for now - will add when dietary_tags column exists
+    return [];
   }
 
   // Cart operations

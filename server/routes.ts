@@ -55,6 +55,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
     try {
       const categoryId = req.query.category ? parseInt(req.query.category as string) : undefined;
       const search = req.query.search as string;
+      
       const products = await storage.getProducts(categoryId, search);
       res.json(products);
     } catch (error) {
@@ -70,6 +71,26 @@ export async function registerRoutes(app: Express): Promise<Server> {
     } catch (error) {
       console.error("Error fetching featured products:", error);
       res.status(500).json({ message: "Failed to fetch featured products" });
+    }
+  });
+
+  app.get('/api/products/brands', async (req, res) => {
+    try {
+      const brands = await storage.getBrands();
+      res.json(brands);
+    } catch (error) {
+      console.error("Error fetching brands:", error);
+      res.status(500).json({ message: "Failed to fetch brands" });
+    }
+  });
+
+  app.get('/api/products/dietary-tags', async (req, res) => {
+    try {
+      const tags = await storage.getDietaryTags();
+      res.json(tags);
+    } catch (error) {
+      console.error("Error fetching dietary tags:", error);
+      res.status(500).json({ message: "Failed to fetch dietary tags" });
     }
   });
 
