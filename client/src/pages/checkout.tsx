@@ -3,6 +3,7 @@ import { useState, useEffect } from "react";
 import { queryClient, apiRequest } from "@/lib/queryClient";
 import Header from "@/components/layout/header";
 import Footer from "@/components/layout/footer";
+import DeliveryScheduler from "@/components/delivery-scheduler";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -13,7 +14,7 @@ import { useToast } from "@/hooks/use-toast";
 import { useAuth } from "@/hooks/useAuth";
 import { isUnauthorizedError } from "@/lib/authUtils";
 import { Link, useLocation } from "wouter";
-import { MapPin, Phone, User, CheckCircle, Loader2, CreditCard } from "lucide-react";
+import { MapPin, Phone, User, CheckCircle, Loader2, CreditCard, Truck } from "lucide-react";
 
 const MPesaPaymentForm = ({ orderId, totalAmount, onSuccess }: { 
   orderId: number; 
@@ -197,6 +198,15 @@ export default function Checkout() {
   const [, setLocation] = useLocation();
   const [deliveryAddress, setDeliveryAddress] = useState("");
   const [deliveryPhone, setDeliveryPhone] = useState("");
+  const [deliverySchedule, setDeliverySchedule] = useState<{
+    deliveryDate: Date | null;
+    deliveryTimeSlot: string;
+    deliveryInstructions: string;
+  }>({
+    deliveryDate: null,
+    deliveryTimeSlot: "",
+    deliveryInstructions: ""
+  });
   const [orderId, setOrderId] = useState<number | null>(null);
   const [showPayment, setShowPayment] = useState(false);
 
@@ -273,6 +283,9 @@ export default function Checkout() {
     createOrderMutation.mutate({
       deliveryAddress,
       deliveryPhone,
+      deliveryDate: deliverySchedule.deliveryDate,
+      deliveryTimeSlot: deliverySchedule.deliveryTimeSlot,
+      deliveryInstructions: deliverySchedule.deliveryInstructions,
       cartItems: cartItems.map((item: any) => ({
         productId: item.productId,
         quantity: item.quantity
@@ -393,6 +406,15 @@ export default function Checkout() {
                   />
                 </CardContent>
               </Card>
+            )}
+            
+            {/* Delivery Scheduling - Only show before payment */}
+            {!showPayment && (
+              <DeliveryScheduler 
+                onScheduleChange={(schedule) => setDeliverySchedule(schedule)}
+                initialSchedule={deliverySchedule}
+                className="mt-6"
+              />
             )}
           </div>
 

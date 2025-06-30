@@ -282,7 +282,22 @@ export class DatabaseStorage implements IStorage {
   }
 
   async createOrder(order: InsertOrder, items: Omit<InsertOrderItem, 'orderId'>[]): Promise<Order> {
-    const [newOrder] = await db.insert(orders).values(order).returning();
+    // Generate tracking number
+    const trackingNumber = `GRS${Date.now()}${Math.floor(Math.random() * 1000)}`;
+    
+    // Calculate estimated delivery if scheduling info provided
+    let estimatedDelivery;
+    if (order.deliveryDate && order.deliveryTimeSlot) {
+      estimatedDelivery = this.calculateEstimatedDelivery(new Date(order.deliveryDate), order.deliveryTimeSlot);
+    }
+    
+    const orderWithTracking = {
+      ...order,
+      trackingNumber,
+      estimatedDelivery: estimatedDelivery?.toISOString()
+    };
+    
+    const [newOrder] = await db.insert(orders).values(orderWithTracking).returning();
     
     // Insert order items
     const orderItemsWithOrderId = items.map(item => ({
@@ -293,6 +308,28 @@ export class DatabaseStorage implements IStorage {
     await db.insert(orderItems).values(orderItemsWithOrderId);
     
     return newOrder;
+  }
+
+  private calculateEstimatedDelivery(deliveryDate: Date, timeSlot: string): Date {
+    const date = new Date(deliveryDate);
+    switch (timeSlot) {
+      case "morning":
+        date.setHours(10, 0, 0, 0);
+        break;
+      case "afternoon":
+        date.setHours(14, 0, 0, 0);
+        break;
+      case "evening":
+        date.setHours(18, 0, 0, 0);
+        break;
+      case "asap":
+        const now = new Date();
+        now.setHours(now.getHours() + 2); // 2 hours from now
+        return now;
+      default:
+        date.setHours(14, 0, 0, 0); // Default to afternoon
+    }
+    return date;
   }
 
   async updateOrderStatus(id: number, status: string): Promise<Order | undefined> {

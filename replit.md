@@ -132,3 +132,14 @@ Changelog:
   - Added currency conversion display (USD to KSh)
   - Updated checkout flow for mobile money payments
   - Added real-time payment status tracking with 30-second processing simulation
+- June 30, 2025. Advanced search & filtering system implementation
+  - Enhanced products page with category filtering, price range slider, search functionality
+  - Grid/list view toggle for product display
+  - Real-time filtering and sorting capabilities
+  - Database seeded with 15 sample products across 6 categories
+- June 30, 2025. Delivery scheduling and enhanced order tracking features
+  - Extended order schema with delivery scheduling fields (deliveryDate, deliveryTimeSlot, deliveryInstructions)
+  - Added order tracking fields (trackingNumber, deliveryPersonInfo, estimatedDelivery)
+  - Created DeliveryScheduler component with calendar integration and time slot selection
+  - Built comprehensive OrderTracker component with real-time status updates
+  - Enhanced checkout flow to include delivery scheduling before payment

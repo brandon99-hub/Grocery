@@ -84,8 +84,17 @@ export const orders = pgTable("orders", {
   deliveryFee: decimal("delivery_fee", { precision: 10, scale: 2 }).default("2.99"),
   paymentStatus: varchar("payment_status", { length: 50 }).default("pending"),
   paymentIntentId: varchar("payment_intent_id", { length: 255 }),
+  // Enhanced delivery scheduling fields
+  deliveryDate: timestamp("delivery_date"),
+  deliveryTimeSlot: varchar("delivery_time_slot", { length: 50 }),
+  deliveryInstructions: text("delivery_instructions"),
   estimatedDelivery: timestamp("estimated_delivery"),
   deliveredAt: timestamp("delivered_at"),
+  // Enhanced tracking fields
+  trackingNumber: varchar("tracking_number", { length: 100 }),
+  deliveryPersonId: varchar("delivery_person_id"),
+  deliveryPersonName: varchar("delivery_person_name", { length: 100 }),
+  deliveryPersonPhone: varchar("delivery_person_phone", { length: 20 }),
   createdAt: timestamp("created_at").defaultNow(),
   updatedAt: timestamp("updated_at").defaultNow(),
 });
