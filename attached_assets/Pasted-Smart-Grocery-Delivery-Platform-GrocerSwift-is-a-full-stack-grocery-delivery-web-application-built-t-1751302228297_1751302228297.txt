@@ -1,0 +1,59 @@
+Smart Grocery Delivery Platform
+GrocerSwift is a full-stack grocery delivery web application built to streamline the process of shopping for daily essentials. It combines a sleek, responsive user interface with robust backend functionality to offer a seamless, secure, and efficient grocery delivery experience.
+
+🔍 Key Features
+🧑‍💻 Frontend (React.js / Tailwind CSS / Figma Design)
+Clean, Responsive UI: Mobile-first design for fast and intuitive navigation.
+
+Real-Time Search & Filtering: Quickly browse by category, brand, or dietary tags.
+
+Smart Cart System: Real-time cart updates, delivery slot selection, and guest checkout.
+
+Product Detail Zoom: High-quality product views and descriptions.
+
+🔧 Backend (Node.js / Express / MongoDB)
+Secure User Auth: JWT-based login with options for Google OAuth and OTP (optional).
+
+Inventory Management: Real-time stock updates, expiry tracking, restock alerts.
+
+Delivery Scheduling: Users choose delivery times based on location availability.
+
+Order Tracking: Real-time status updates from warehouse to doorstep.
+
+Payment Integration: Stripe, PayPal, and M-Pesa (sandbox/demo mode).
+
+🛠️ Admin Dashboard
+Manage Products & Categories
+
+View Sales Analytics & Trends
+
+Track and Update Orders
+
+Inventory Control with Alerts
+
+🔐 Security & Performance
+SSL-secured transactions and user data encryption.
+
+Role-based access control (Admin, Delivery, Customer).
+
+CSRF protection, input sanitization, and rate limiting.
+
+Performance enhancements (lazy loading, CDN assets, caching).
+
+🌍 Business Model
+Hyperlocal Fulfillment: Connects users with nearest partner grocery stores.
+
+Delivery Fee Tiers: Based on distance and delivery urgency.
+
+Premium Subscriptions: Early delivery slots, exclusive deals, free shipping.
+
+Vendor Marketplace: Allow local farmers or grocers to list their items.
+
+📊 Future Improvements
+AI-powered product recommendations
+
+In-app recipe planner with ingredient auto-add
+
+Multi-warehouse support with geofencing
+
+Loyalty points & referral system
