@@ -158,7 +158,7 @@ export default function Cart() {
                         <h3 className="font-semibold text-gray-900">{item.product.name}</h3>
                         <p className="text-sm text-gray-500">{item.product.weight || item.product.unit}</p>
                         <p className="text-sm font-medium text-primary">
-                          ${parseFloat(item.product.price).toFixed(2)}
+                          Ksh {parseFloat(item.product.price).toFixed(2)}
                         </p>
                       </div>
                       <div className="flex items-center space-x-2">
@@ -182,7 +182,7 @@ export default function Cart() {
                       </div>
                       <div className="text-right">
                         <p className="font-semibold text-gray-900">
-                          ${(parseFloat(item.product.price) * item.quantity).toFixed(2)}
+                          Ksh {(parseFloat(item.product.price) * item.quantity).toFixed(2)}
                         </p>
                         <Button
                           variant="ghost"

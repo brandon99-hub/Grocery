@@ -25,7 +25,9 @@ import { eq, desc, and, or, ilike, sql } from "drizzle-orm";
 export interface IStorage {
   // User operations (mandatory for Replit Auth)
   getUser(id: string): Promise<User | undefined>;
+  getUserByEmail(email: string): Promise<User | undefined>;
   upsertUser(user: UpsertUser): Promise<User>;
+  createUser(userData: { email: string; password: string; firstName: string; lastName: string; isAdmin?: boolean }): Promise<User>;
 
   // Category operations
   getCategories(): Promise<Category[]>;
@@ -81,6 +83,27 @@ export class DatabaseStorage implements IStorage {
           ...userData,
           updatedAt: new Date(),
         },
+      })
+      .returning();
+    return user;
+  }
+
+  async getUserByEmail(email: string): Promise<User | undefined> {
+    const [user] = await db.select().from(users).where(eq(users.email, email));
+    return user;
+  }
+
+  async createUser(userData: { email: string; password: string; firstName: string; lastName: string; isAdmin?: boolean }): Promise<User> {
+    const userId = crypto.randomUUID();
+    const [user] = await db
+      .insert(users)
+      .values({
+        id: userId,
+        email: userData.email,
+        password: userData.password,
+        firstName: userData.firstName,
+        lastName: userData.lastName,
+        isAdmin: userData.isAdmin || false,
       })
       .returning();
     return user;

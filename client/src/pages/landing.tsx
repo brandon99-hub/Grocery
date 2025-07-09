@@ -54,16 +54,17 @@ export default function Landing() {
                 <Button 
                   size="lg" 
                   className="bg-accent hover:bg-accent/90 text-accent-foreground"
-                  onClick={() => window.location.href = '/api/login'}
+                  onClick={() => window.location.href = '/auth'}
                 >
-                  Start Shopping
+                  Sign Up Now
                 </Button>
                 <Button 
                   variant="outline" 
                   size="lg"
                   className="border-white text-white hover:bg-white hover:text-primary"
+                  onClick={() => window.location.href = '/auth'}
                 >
-                  Learn More
+                  Sign In
                 </Button>
               </div>
             </div>

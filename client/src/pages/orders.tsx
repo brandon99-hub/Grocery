@@ -86,7 +86,7 @@ export default function Orders() {
                       </div>
                       <div className="text-right">
                         <p className="text-lg font-bold text-primary">
-                          ${parseFloat(order.totalAmount).toFixed(2)}
+                          Ksh {parseFloat(order.totalAmount).toFixed(2)}
                         </p>
                         <p className="text-sm text-gray-500">
                           {order.orderItems?.length} item{order.orderItems?.length !== 1 ? 's' : ''}

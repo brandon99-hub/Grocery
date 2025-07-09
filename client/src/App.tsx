@@ -7,6 +7,7 @@ import { useAuth } from "@/hooks/useAuth";
 import { CartProvider } from "@/contexts/cart-context";
 import NotFound from "@/pages/not-found";
 import Landing from "@/pages/landing";
+import AuthPage from "@/pages/auth";
 import Home from "@/pages/home";
 import Products from "@/pages/products";
 import Cart from "@/pages/cart";
@@ -20,11 +21,14 @@ function Router() {
 
   return (
     <Switch>
-      {isLoading || !isAuthenticated ? (
-        <Route path="/" component={Landing} />
-      ) : (
+      {/* Public routes - always accessible */}
+      <Route path="/" component={Landing} />
+      <Route path="/auth" component={AuthPage} />
+      
+      {/* Protected routes - only when authenticated */}
+      {!isLoading && isAuthenticated && (
         <>
-          <Route path="/" component={Home} />
+          <Route path="/home" component={Home} />
           <Route path="/products" component={Products} />
           <Route path="/cart" component={Cart} />
           <Route path="/checkout" component={Checkout} />
@@ -33,6 +37,7 @@ function Router() {
           <Route path="/admin" component={Admin} />
         </>
       )}
+      
       <Route component={NotFound} />
     </Switch>
   );

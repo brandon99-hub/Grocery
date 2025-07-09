@@ -1,7 +1,7 @@
 import type { Express } from "express";
 import { createServer, type Server } from "http";
 import { storage } from "./storage";
-import { setupAuth, isAuthenticated } from "./replitAuth";
+import { setupAuth, isAuthenticated } from "./localAuth";
 import { insertProductSchema, insertCategorySchema, insertOrderSchema, insertOrderItemSchema } from "@shared/schema";
 import { z } from "zod";
 
@@ -12,7 +12,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
   // Auth routes
   app.get('/api/auth/user', isAuthenticated, async (req: any, res) => {
     try {
-      const userId = req.user.claims.sub;
+      const userId = req.user.userId;
       const user = await storage.getUser(userId);
       res.json(user);
     } catch (error) {
@@ -34,7 +34,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
 
   app.post('/api/categories', isAuthenticated, async (req: any, res) => {
     try {
-      const userId = req.user.claims.sub;
+      const userId = req.user.userId;
       const user = await storage.getUser(userId);
       
       if (!user?.isAdmin) {
@@ -110,7 +110,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
 
   app.post('/api/products', isAuthenticated, async (req: any, res) => {
     try {
-      const userId = req.user.claims.sub;
+      const userId = req.user.userId;
       const user = await storage.getUser(userId);
       
       if (!user?.isAdmin) {
@@ -128,7 +128,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
 
   app.put('/api/products/:id', isAuthenticated, async (req: any, res) => {
     try {
-      const userId = req.user.claims.sub;
+      const userId = req.user.userId;
       const user = await storage.getUser(userId);
       
       if (!user?.isAdmin) {
@@ -152,7 +152,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
 
   app.delete('/api/products/:id', isAuthenticated, async (req: any, res) => {
     try {
-      const userId = req.user.claims.sub;
+      const userId = req.user.userId;
       const user = await storage.getUser(userId);
       
       if (!user?.isAdmin) {
@@ -176,7 +176,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
   // Cart routes
   app.get('/api/cart', isAuthenticated, async (req: any, res) => {
     try {
-      const userId = req.user.claims.sub;
+      const userId = req.user.userId;
       const cartItems = await storage.getCartItems(userId);
       res.json(cartItems);
     } catch (error) {
@@ -187,7 +187,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
 
   app.post('/api/cart', isAuthenticated, async (req: any, res) => {
     try {
-      const userId = req.user.claims.sub;
+      const userId = req.user.userId;
       const { productId, quantity = 1 } = req.body;
       
       const cartItem = await storage.addToCart({
@@ -239,7 +239,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
 
   app.delete('/api/cart', isAuthenticated, async (req: any, res) => {
     try {
-      const userId = req.user.claims.sub;
+      const userId = req.user.userId;
       await storage.clearCart(userId);
       res.json({ message: "Cart cleared" });
     } catch (error) {
@@ -251,7 +251,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
   // Order routes
   app.get('/api/orders', isAuthenticated, async (req: any, res) => {
     try {
-      const userId = req.user.claims.sub;
+      const userId = req.user.userId;
       const user = await storage.getUser(userId);
       
       // Admin can see all orders, regular users can only see their own
@@ -266,7 +266,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
   app.get('/api/orders/:id', isAuthenticated, async (req: any, res) => {
     try {
       const id = parseInt(req.params.id);
-      const userId = req.user.claims.sub;
+      const userId = req.user.userId;
       const user = await storage.getUser(userId);
       
       const order = await storage.getOrderById(id);
@@ -289,7 +289,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
 
   app.post('/api/orders', isAuthenticated, async (req: any, res) => {
     try {
-      const userId = req.user.claims.sub;
+      const userId = req.user.userId;
       const { deliveryAddress, deliveryPhone, cartItems } = req.body;
       
       if (!cartItems || cartItems.length === 0) {
@@ -351,7 +351,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
 
   app.put('/api/orders/:id/status', isAuthenticated, async (req: any, res) => {
     try {
-      const userId = req.user.claims.sub;
+      const userId = req.user.userId;
       const user = await storage.getUser(userId);
       
       if (!user?.isAdmin) {
@@ -454,7 +454,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
   // Admin stats route
   app.get('/api/admin/stats', isAuthenticated, async (req: any, res) => {
     try {
-      const userId = req.user.claims.sub;
+      const userId = req.user.userId;
       const user = await storage.getUser(userId);
       
       if (!user?.isAdmin) {

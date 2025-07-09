@@ -133,9 +133,7 @@ export default function ProductCard({ product }: ProductCardProps) {
 
         <div className="flex items-center justify-between">
           <div className="flex items-center space-x-2">
-            <span className="text-lg font-bold text-gray-900">
-              ${price.toFixed(2)}
-            </span>
+            <span className="font-semibold">Ksh {price.toFixed(2)}</span>
             {hasDiscount && (
               <span className="text-sm text-gray-500 line-through">
                 ${originalPrice.toFixed(2)}

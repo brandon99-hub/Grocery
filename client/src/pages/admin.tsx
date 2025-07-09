@@ -270,7 +270,7 @@ export default function Admin() {
                   <div className="flex items-center justify-between">
                     <div>
                       <p className="text-sm text-gray-600 mb-1">Revenue</p>
-                      <p className="text-2xl font-bold text-gray-900">${stats?.totalRevenue?.toFixed(2) || '0.00'}</p>
+                      <p className="text-2xl font-bold text-gray-900">Ksh {stats?.totalRevenue?.toFixed(2) || '0.00'}</p>
                     </div>
                     <div className="bg-green-100 p-3 rounded-lg">
                       <DollarSign className="h-6 w-6 text-green-600" />
@@ -324,7 +324,7 @@ export default function Admin() {
                         </p>
                       </div>
                       <div className="text-right">
-                        <p className="font-semibold">${parseFloat(order.totalAmount).toFixed(2)}</p>
+                        <p className="font-semibold">Ksh {parseFloat(order.totalAmount).toFixed(2)}</p>
                         <Badge className={statusColors[order.status as keyof typeof statusColors]}>
                           {order.status}
                         </Badge>
@@ -530,7 +530,7 @@ export default function Admin() {
                         <TableCell>
                           {categories?.find((cat: any) => cat.id === product.category)?.name || 'Unknown'}
                         </TableCell>
-                        <TableCell>${parseFloat(product.price).toFixed(2)}</TableCell>
+                        <TableCell>Ksh {parseFloat(product.price).toFixed(2)}</TableCell>
                         <TableCell>{product.stockCount}</TableCell>
                         <TableCell>
                           <Badge variant={product.inStock ? "default" : "destructive"}>
@@ -593,7 +593,7 @@ export default function Admin() {
                         <TableCell className="font-medium">#{order.id}</TableCell>
                         <TableCell>{order.userId}</TableCell>
                         <TableCell>{order.orderItems?.length || 0} items</TableCell>
-                        <TableCell>${parseFloat(order.totalAmount).toFixed(2)}</TableCell>
+                        <TableCell>Ksh {parseFloat(order.totalAmount).toFixed(2)}</TableCell>
                         <TableCell>
                           <Select
                             value={order.status}

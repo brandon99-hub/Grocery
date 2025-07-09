@@ -439,7 +439,7 @@ export default function Checkout() {
                         <p className="text-xs text-gray-500">Qty: {item.quantity}</p>
                       </div>
                       <span className="font-semibold text-sm">
-                        ${(parseFloat(item.product.price) * item.quantity).toFixed(2)}
+                        KSh {(parseFloat(item.product.price) * item.quantity).toFixed(2)}
                       </span>
                     </div>
                   ))}
@@ -451,16 +451,16 @@ export default function Checkout() {
                 <div className="space-y-2">
                   <div className="flex justify-between">
                     <span className="text-gray-600">Subtotal ({Array.isArray(cartItems) ? cartItems.length : 0} items)</span>
-                    <span className="font-semibold">${subtotal.toFixed(2)}</span>
+                    <span className="font-semibold">KSh {subtotal.toFixed(2)}</span>
                   </div>
                   <div className="flex justify-between">
                     <span className="text-gray-600">Delivery Fee</span>
-                    <span className="font-semibold">${deliveryFee.toFixed(2)}</span>
+                    <span className="font-semibold">KSh {deliveryFee.toFixed(2)}</span>
                   </div>
                   <Separator />
                   <div className="flex justify-between text-lg font-bold">
                     <span>Total</span>
-                    <span className="text-primary">${total.toFixed(2)}</span>
+                    <span className="text-primary">KSh {total.toFixed(2)}</span>
                   </div>
                   <div className="text-center text-sm text-gray-500">
                     ≈ KSh {(total * 130).toFixed(2)}

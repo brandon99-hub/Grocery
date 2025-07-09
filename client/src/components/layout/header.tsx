@@ -18,7 +18,7 @@ import CartSlideOver from "@/components/cart-slide-over";
 
 export default function Header() {
   const [location, navigate] = useLocation();
-  const { user, isAuthenticated } = useAuth();
+  const { user, isAuthenticated, logout } = useAuth();
   const { cartItemsCount, isCartOpen, setIsCartOpen } = useCart();
   const [searchQuery, setSearchQuery] = useState("");
   const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
@@ -33,11 +33,12 @@ export default function Header() {
   };
 
   const handleLogout = () => {
-    window.location.href = "/api/logout";
+    logout();
+    setIsUserMenuOpen(false);
   };
 
   const handleLogin = () => {
-    window.location.href = "/api/login";
+    window.location.href = "/auth";
   };
 
   return (
@@ -77,7 +78,7 @@ export default function Header() {
               {isAuthenticated && (
                 <div className="hidden sm:flex items-center text-gray-600">
                   <MapPin className="h-4 w-4 mr-1" />
-                  <span className="text-sm">San Francisco</span>
+                  <span className="text-sm">Nairobi</span>
                 </div>
               )}
 
@@ -108,18 +109,10 @@ export default function Header() {
                     className="flex items-center space-x-2"
                   >
                     <div className="w-8 h-8 bg-primary rounded-full flex items-center justify-center">
-                      {user?.profileImageUrl ? (
-                        <img
-                          src={user.profileImageUrl}
-                          alt="Profile"
-                          className="w-8 h-8 rounded-full object-cover"
-                        />
-                      ) : (
-                        <User className="text-white h-4 w-4" />
-                      )}
+                      <User className="text-white h-4 w-4" />
                     </div>
                     <span className="hidden sm:block text-sm">
-                      {user?.firstName || user?.email?.split('@')[0] || 'User'}
+                      {(user as any)?.firstName || (user as any)?.email?.split('@')[0] || 'User'}
                     </span>
                   </Button>
                   
@@ -142,7 +135,7 @@ export default function Header() {
                               Order History
                             </div>
                           </Link>
-                          {user?.isAdmin && (
+                          {(user as any)?.isAdmin && (
                             <>
                               <div className="border-t border-gray-100"></div>
                               <Link href="/admin">
@@ -218,7 +211,7 @@ export default function Header() {
                   Orders
                 </div>
               </Link>
-              {user?.isAdmin && (
+              {(user as any)?.isAdmin && (
                 <Link href="/admin">
                   <div className="block px-3 py-2 text-base font-medium text-gray-700 hover:bg-gray-50 rounded-md">
                     Admin
